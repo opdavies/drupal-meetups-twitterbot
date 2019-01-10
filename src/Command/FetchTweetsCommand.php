@@ -13,6 +13,18 @@ class FetchTweetsCommand extends Command
 {
     protected static $defaultName = 'app:fetch-tweets';
 
+    /**
+     * @var \App\Service\TweetFetcher
+     */
+    private $tweetFetcher;
+
+    public function __construct(TweetFetcher $tweetFetcher)
+    {
+        parent::__construct();
+
+        $this->tweetFetcher = $tweetFetcher;
+    }
+
     protected function configure()
     {
         $this
@@ -24,6 +36,6 @@ class FetchTweetsCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        dump($this->tweetFetcher->getTweets());
     }
 }
