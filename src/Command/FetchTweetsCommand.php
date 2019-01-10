@@ -37,6 +37,16 @@ class FetchTweetsCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        dump($this->tweetFetcher->getTweets());
+        $io->table(
+          ['Tweet', 'Author', 'Created', 'ID'],
+          $this->tweetFetcher->getTweets()->map(function (array $tweet) {
+              return [
+                $tweet['text'],
+                $tweet['author'],
+                $tweet['created'],
+                $tweet['id'],
+              ];
+          })->all()
+        );
     }
 }

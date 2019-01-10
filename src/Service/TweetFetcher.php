@@ -57,7 +57,7 @@ class TweetFetcher
 
         return collect($response->get('statuses'))
             ->map(function (\stdClass $tweet) {
-                return (object) [
+                return [
                     'id' => $tweet->id,
                     'created' => strtotime($tweet->created_at),
                     'text' => $tweet->text,
