@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Model\Tweet;
 use App\Service\TweetFetcher;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -39,12 +40,12 @@ class FetchTweetsCommand extends Command
 
         $io->table(
           ['Tweet', 'Author', 'Created', 'ID'],
-          $this->tweetFetcher->getTweets()->map(function (array $tweet) {
+          $this->tweetFetcher->getTweets()->map(function (Tweet $tweet) {
               return [
-                $tweet['text'],
-                $tweet['author'],
-                $tweet['created'],
-                $tweet['id'],
+                  $tweet->getText(),
+                  $tweet->getAuthor(),
+                  $tweet->getCreated(),
+                  $tweet->getId(),
               ];
           })->all()
         );

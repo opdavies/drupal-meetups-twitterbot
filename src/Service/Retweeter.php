@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Model\Tweet;
 use Codebird\Codebird;
 
 class Retweeter
@@ -26,10 +27,10 @@ class Retweeter
         $this->codebird = $codebird;
     }
 
-    public function retweet(array $tweet): void
+    public function retweet(Tweet $tweet): void
     {
         $this->codebird->statuses_retweet_ID([
-          'id' => $tweet['id'],
+          'id' => $tweet->getId(),
         ]);
     }
 }

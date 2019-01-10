@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Model\Tweet;
 use App\Service\Retweeter;
 use App\Service\TweetFetcher;
 use Symfony\Component\Console\Command\Command;
@@ -36,7 +37,7 @@ class RetweetTweetsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->tweetFetcher->getTweets()->each(function (array $tweet) {
+        $this->tweetFetcher->getTweets()->each(function (Tweet $tweet) {
             $this->retweeter->retweet($tweet);
         });
     }

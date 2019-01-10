@@ -24,6 +24,21 @@ class Tweet
         $this->author = $author;
     }
 
+    public function getText(): string
+    {
+        return $this->text;
+    }
+
+    public function getCreated(): string
+    {
+        return $this->created;
+    }
+
+    public function getAuthor(): string
+    {
+        return $this->author;
+    }
+
     public function setId(int $id): void
     {
         $this->id = $id;

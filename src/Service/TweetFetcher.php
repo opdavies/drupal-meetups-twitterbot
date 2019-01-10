@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Model\Tweet;
 use Codebird\Codebird;
 use Tightenco\Collect\Support\Collection;
 
@@ -56,13 +57,13 @@ class TweetFetcher
         }
 
         return collect($response->get('statuses'))
-            ->map(function (\stdClass $tweet) {
-                return [
-                    'id' => $tweet->id,
-                    'created' => strtotime($tweet->created_at),
-                    'text' => $tweet->text,
-                    'author' => $tweet->user->screen_name,
-                ];
+            ->map(function (\stdClass $status) {
+                return tap(new Tweet(), function (Tweet $tweet) use ($status) {
+                    $tweet->setId($status->id);
+                    $tweet->setText($status->text);
+                    $tweet->setCreated(strtotime($status->created_at));
+                    $tweet->setAuthor($status->user->screen_name);
+                });
             })->reverse();
     }
 
