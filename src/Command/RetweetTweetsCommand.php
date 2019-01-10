@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Service\Retweeter;
 use App\Service\TweetFetcher;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,12 +17,16 @@ class RetweetTweetsCommand extends Command
 
     private $tweetFetcher;
 
-    public function __construct(TweetFetcher $tweetFetcher)
+    private $retweeter;
+
+    public function __construct(TweetFetcher $tweetFetcher, Retweeter $retweeter)
     {
         parent::__construct();
 
         $this->tweetFetcher = $tweetFetcher;
+        $this->retweeter = $retweeter;
     }
+
     protected function configure()
     {
         $this
