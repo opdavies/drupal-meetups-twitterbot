@@ -25,4 +25,11 @@ class Retweeter
 
         $this->codebird = $codebird;
     }
+
+    public function retweet(array $tweet): void
+    {
+        $this->codebird->statuses_retweet_ID([
+          'id' => $tweet['id'],
+        ]);
+    }
 }

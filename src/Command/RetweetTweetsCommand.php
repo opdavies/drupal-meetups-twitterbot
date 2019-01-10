@@ -37,7 +37,7 @@ class RetweetTweetsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->tweetFetcher->getTweets()->each(function (array $tweet) {
-            $this->retweeter->retweet();
+            $this->retweeter->retweet($tweet);
         });
     }
 }
