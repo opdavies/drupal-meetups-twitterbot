@@ -5,6 +5,9 @@
     "doctrine/inflector": {
         "version": "v1.3.0"
     },
+    "josephlavin/tap": {
+        "version": "v1.0.0"
+    },
     "jublonet/codebird-php": {
         "version": "3.1.0"
     },
