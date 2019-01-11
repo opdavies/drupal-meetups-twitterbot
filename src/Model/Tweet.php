@@ -4,9 +4,16 @@ namespace App\Model;
 
 class Tweet
 {
+    /** @var string */
     private $text;
+
+    /** @var string */
     private $created;
+
+    /** @var string */
     private $author;
+
+    /** @var int */
     private $id;
 
     public function setText(string $text): void
