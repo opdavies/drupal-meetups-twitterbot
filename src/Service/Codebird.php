@@ -4,7 +4,6 @@ namespace App\Service;
 
 class Codebird
 {
-
     /**
      * @var \Codebird\Codebird
      */
@@ -31,5 +30,4 @@ class Codebird
     {
         return $this->codebird;
     }
-
 }
