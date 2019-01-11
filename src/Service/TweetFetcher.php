@@ -18,6 +18,7 @@ class TweetFetcher
         'DrupalYorkshire',
         'nwdug',
         'opdavies',
+        'opdavies_',
         'OxDUG',
         'swdug',
     ];
