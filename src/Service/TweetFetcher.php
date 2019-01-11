@@ -2,7 +2,8 @@
 
 namespace App\Service;
 
-use App\Model\Tweet;
+use App\Entity\Tweet;
+use Doctrine\ORM\EntityManagerInterface;
 use Tightenco\Collect\Support\Collection;
 
 class TweetFetcher
@@ -28,9 +29,15 @@ class TweetFetcher
         'drupalmeetup',
     ];
 
-    public function __construct(Codebird $codebird)
+    /**
+     * @var \Doctrine\ORM\EntityManagerInterface
+     */
+    private $entityManager;
+
+    public function __construct(Codebird $codebird, EntityManagerInterface $entityManager)
     {
         $this->codebird = $codebird;
+        $this->entityManager = $entityManager;
     }
 
     public function getTweets(): Collection
@@ -44,15 +51,21 @@ class TweetFetcher
             dump($response);
         }
 
-        return collect($response->get('statuses'))
+        $tweets = collect($response->get('statuses'))
             ->map(function (\stdClass $status) {
                 return tap(new Tweet(), function (Tweet $tweet) use ($status) {
                     $tweet->setId($status->id);
                     $tweet->setText($status->text);
                     $tweet->setCreated(strtotime($status->created_at));
                     $tweet->setAuthor($status->user->screen_name);
+
+                    $this->entityManager->persist($tweet);
                 });
             })->reverse();
+
+        $this->entityManager->flush();
+
+        return $tweets;
     }
 
     private function params(): Collection
