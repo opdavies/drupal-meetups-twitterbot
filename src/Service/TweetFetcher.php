@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Tweet;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\TweetRepository;
 use Tightenco\Collect\Support\Collection;
 
 class TweetFetcher
@@ -30,28 +30,30 @@ class TweetFetcher
     ];
 
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var \App\Repository\TweetRepository
      */
-    private $entityManager;
+    private $tweetRepository;
 
-    public function __construct(Codebird $codebird, EntityManagerInterface $entityManager)
+    public function __construct(Codebird $codebird, TweetRepository $tweetRepository)
     {
         $this->codebird = $codebird;
-        $this->entityManager = $entityManager;
+        $this->tweetRepository = $tweetRepository;
     }
 
     public function getTweets(): Collection
     {
+        $latestTweet = $this->tweetRepository->findNewestTweet();
+
         $response = collect($this->codebird->get()->search_tweets([
             'q' => collect($this->params()->all())->implode(' AND '),
-            // 'since_id' => $this->lastTweetId,
+             'since_id' => $latestTweet ? $latestTweet->getId() : null,
         ]));
 
         if ($response->get('httpstatus') != 200) {
             dump($response);
         }
 
-        $tweets = collect($response->get('statuses'))
+        return collect($response->get('statuses'))
             ->map(function (\stdClass $status) {
                 return tap(new Tweet(), function (Tweet $tweet) use ($status) {
                     $tweet->setId($status->id);
@@ -62,10 +64,6 @@ class TweetFetcher
                     $this->entityManager->persist($tweet);
                 });
             })->reverse();
-
-        $this->entityManager->flush();
-
-        return $tweets;
     }
 
     private function params(): Collection

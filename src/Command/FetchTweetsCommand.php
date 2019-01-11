@@ -4,12 +4,10 @@ namespace App\Command;
 
 use App\Entity\Tweet;
 use App\Service\TweetFetcher;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 class FetchTweetsCommand extends Command
 {
@@ -20,11 +18,17 @@ class FetchTweetsCommand extends Command
      */
     private $tweetFetcher;
 
-    public function __construct(TweetFetcher $tweetFetcher)
+    /**
+     * @var \Doctrine\ORM\EntityManagerInterface
+     */
+    private $entityManager;
+
+    public function __construct(TweetFetcher $tweetFetcher, EntityManagerInterface $entityManager)
     {
         parent::__construct();
 
         $this->tweetFetcher = $tweetFetcher;
+        $this->entityManager = $entityManager;
     }
 
     protected function configure()
@@ -36,18 +40,10 @@ class FetchTweetsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io = new SymfonyStyle($input, $output);
+        $this->tweetFetcher->getTweets()->each(function (Tweet $tweet) {
+            $this->entityManager->persist($tweet);
+        });
 
-        $io->table(
-          ['Tweet', 'Author', 'Created', 'ID'],
-          $this->tweetFetcher->getTweets()->map(function (Tweet $tweet) {
-              return [
-                  $tweet->getText(),
-                  $tweet->getAuthor(),
-                  $tweet->getCreated(),
-                  $tweet->getId(),
-              ];
-          })->all()
-        );
+        $this->entityManager->flush();
     }
 }
