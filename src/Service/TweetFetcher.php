@@ -3,12 +3,11 @@
 namespace App\Service;
 
 use App\Model\Tweet;
-use Codebird\Codebird;
 use Tightenco\Collect\Support\Collection;
 
 class TweetFetcher
 {
-    /** @var \Codebird\Codebird */
+    /** @var \App\Service\Codebird */
     private $codebird;
 
     private $accounts = [
@@ -30,24 +29,12 @@ class TweetFetcher
 
     public function __construct(Codebird $codebird)
     {
-        $codebird::setConsumerKey(
-            getenv('TWITTER_CONSUMER_KEY'),
-            getenv('TWITTER_CONSUMER_SECRET')
-        );
-
-        $codebird = $codebird::getInstance();
-
-        $codebird->setToken(
-            getenv('TWITTER_ACCESS_TOKEN'),
-            getenv('TWITTER_ACCESS_SECRET')
-        );
-
         $this->codebird = $codebird;
     }
 
     public function getTweets(): Collection
     {
-        $response = collect($this->codebird->search_tweets([
+        $response = collect($this->codebird->get()->search_tweets([
             'q' => collect($this->params()->all())->implode(' AND '),
             // 'since_id' => $this->lastTweetId,
         ]));
