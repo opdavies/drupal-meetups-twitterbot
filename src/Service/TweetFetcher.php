@@ -49,12 +49,12 @@ class TweetFetcher
 
     public function getTweets(): Collection
     {
-        $newestTweet = $this->tweetRepository->findNewestTweet();
+        $params = ['q' => collect($this->params()->all())->implode(' AND ')];
+        if ($newestTweet = $this->tweetRepository->findNewestTweet()) {
+            $params['since_id'] = $newestTweet->getId();
+        }
 
-        $response = collect($this->codebird->get()->search_tweets([
-            'q' => collect($this->params()->all())->implode(' AND '),
-//             'since_id' => $newestTweet ? $newestTweet->getId() : null,
-        ]));
+        $response = collect($this->codebird->get()->search_tweets($params));
 
         if ($response->get('httpstatus') != 200) {
             dump($response);
