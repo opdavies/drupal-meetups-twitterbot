@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Tweet;
+use App\Repository\TweetRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Tightenco\Collect\Support\Collection;
 
@@ -34,17 +35,25 @@ class TweetFetcher
      */
     private $entityManager;
 
-    public function __construct(Codebird $codebird, EntityManagerInterface $entityManager)
+    /**
+     * @var \App\Service\TweetRepository
+     */
+    private $tweetRepository;
+
+    public function __construct(Codebird $codebird, EntityManagerInterface $entityManager, TweetRepository $tweetRepository)
     {
         $this->codebird = $codebird;
         $this->entityManager = $entityManager;
+        $this->tweetRepository = $tweetRepository;
     }
 
     public function getTweets(): Collection
     {
+        $newestTweet = $this->tweetRepository->findNewestTweet();
+
         $response = collect($this->codebird->get()->search_tweets([
             'q' => collect($this->params()->all())->implode(' AND '),
-            // 'since_id' => $this->lastTweetId,
+//             'since_id' => $newestTweet ? $newestTweet->getId() : null,
         ]));
 
         if ($response->get('httpstatus') != 200) {
