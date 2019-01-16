@@ -28,7 +28,7 @@ class FetchTweetsCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Add a short description for your command')
+            ->setDescription('Fetch and store any tweets to be retweeted')
         ;
     }
 

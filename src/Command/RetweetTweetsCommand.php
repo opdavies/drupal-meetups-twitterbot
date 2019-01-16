@@ -47,7 +47,7 @@ class RetweetTweetsCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Add a short description for your command')
+            ->setDescription('Retweet one or more stored tweets')
             ->addOption('number', null, InputOption::VALUE_OPTIONAL, 'Specify how many tweets to retweet.', 1)
         ;
     }
