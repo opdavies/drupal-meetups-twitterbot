@@ -2,15 +2,15 @@
 
 namespace App\Command;
 
-use App\Model\Tweet;
+use App\Entity\Tweet;
+use App\Repository\TweetRepository;
 use App\Service\Retweeter;
 use App\Service\TweetFetcher;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 class RetweetTweetsCommand extends Command
 {
@@ -20,25 +20,48 @@ class RetweetTweetsCommand extends Command
 
     private $retweeter;
 
-    public function __construct(TweetFetcher $tweetFetcher, Retweeter $retweeter)
-    {
+    /**
+     * @var \App\Repository\TweetRepository
+     */
+    private $tweetRepository;
+
+    /**
+     * @var \Doctrine\ORM\EntityManagerInterface
+     */
+    private $entityManager;
+
+    public function __construct(
+        TweetFetcher $tweetFetcher,
+        TweetRepository $tweetRepository,
+        Retweeter $retweeter,
+        EntityManagerInterface $entityManager
+    ) {
         parent::__construct();
 
         $this->tweetFetcher = $tweetFetcher;
         $this->retweeter = $retweeter;
+        $this->tweetRepository = $tweetRepository;
+        $this->entityManager = $entityManager;
     }
 
     protected function configure()
     {
         $this
             ->setDescription('Add a short description for your command')
+            ->addOption('number', null, InputOption::VALUE_OPTIONAL, 'Specify how many tweets to retweet.', 1)
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->tweetFetcher->getTweets()->each(function (Tweet $tweet) {
+        $this->tweetRepository->getUntweetedTweets($input->getOption('number'))->each(function (Tweet $tweet) {
             $this->retweeter->retweet($tweet);
+
+            $tweet->setRetweeted(time());
+
+            $this->entityManager->persist($tweet);
         });
+
+        $this->entityManager->flush();
     }
 }
