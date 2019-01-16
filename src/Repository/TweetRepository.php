@@ -30,22 +30,19 @@ class TweetRepository extends ServiceEntityRepository
 
         return collect($result)->first();
     }
-    // /**
-    //  * @return Tweet[] Returns an array of Tweet objects
-    //  */
-    /*
-    public function findByExampleField($value)
+
+
+    public function getUntweetedTweets(int $limit): Collection
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return collect(
+            $this->createQueryBuilder('t')
+                ->where('t.retweeted is NULL')
+                ->orderBy('t.created', 'asc')
+                ->setMaxResults($limit)
+                ->getQuery()
+                ->getResult()
+        );
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Tweet
