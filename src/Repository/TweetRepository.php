@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Tweet;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Tightenco\Collect\Support\Collection;
 
 /**
  * @method Tweet|null find($id, $lockMode = null, $lockVersion = null)

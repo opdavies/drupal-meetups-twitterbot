@@ -2,15 +2,14 @@
 
 namespace App\Command;
 
-use App\Model\Tweet;
+use App\Entity\Tweet;
+use App\Repository\TweetRepository;
 use App\Service\Retweeter;
 use App\Service\TweetFetcher;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 class RetweetTweetsCommand extends Command
 {
