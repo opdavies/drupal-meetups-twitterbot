@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "80d95f9980e81a7c3025475d52763bdf",
+    "content-hash": "e014b385cd8d34a0bbf0283da94f7c53",
     "packages": [
         {
             "name": "composer/installers",
@@ -1438,15 +1438,15 @@
             "authors": [
                 {
                     "name": "Joshua Atkins",
+                    "role": "Developer",
                     "email": "joshua.atkins@jublo.net",
-                    "homepage": "http://atkins.im/",
-                    "role": "Developer"
+                    "homepage": "http://atkins.im/"
                 },
                 {
                     "name": "J.M.",
+                    "role": "Developer",
                     "email": "jm@jublo.net",
-                    "homepage": "http://mynetx.net/",
-                    "role": "Developer"
+                    "homepage": "http://mynetx.net/"
                 }
             ],
             "description": "Easy access to the Twitter REST API, Collections API, Streaming API, TON (Object Nest) API and Twitter Ads API — all from one PHP library.",
@@ -3197,16 +3197,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.2.1",
+            "version": "v4.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "c41175c801e3edfda90f32e292619d10c27103d7"
+                "reference": "5a0b7c32dc3ec56fd4abae8a4a71b0cf05013686"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/c41175c801e3edfda90f32e292619d10c27103d7",
-                "reference": "c41175c801e3edfda90f32e292619d10c27103d7",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/5a0b7c32dc3ec56fd4abae8a4a71b0cf05013686",
+                "reference": "5a0b7c32dc3ec56fd4abae8a4a71b0cf05013686",
                 "shasum": ""
             },
             "require": {
@@ -3225,7 +3225,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.2-dev"
+                    "dev-master": "4.3-dev"
                 }
             },
             "autoload": {
@@ -3252,7 +3252,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2018-11-11T19:52:12+00:00"
+            "time": "2019-08-20T14:27:59+00:00"
         },
         {
             "name": "tightenco/collect",
