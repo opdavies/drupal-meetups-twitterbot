@@ -13,7 +13,7 @@
         "symfony/framework-bundle": "4.2.*",
         "symfony/orm-pack": "^1.0",
         "symfony/yaml": "4.2.*",
-        "tightenco/collect": "^5.7"
+        "tightenco/collect": "^6.1"
     },
     "config": {
         "preferred-install": {
